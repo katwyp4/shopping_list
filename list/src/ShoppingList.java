@@ -1,6 +1,10 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Scanner;
+
 public class ShoppingList {
     public static void main(String[] args) {
-
     }
 
     private static void info(){
@@ -15,4 +19,29 @@ public class ShoppingList {
         System.out.println("7. Save list");
         System.out.println("-----------------------------------------------------------------------------------------");
     }
+
+    private ArrayList<Category> load(String name) throws FileNotFoundException {
+        ArrayList<Product> temp =  new ArrayList<>();
+        ArrayList<Category> categories = new ArrayList<>();
+        File file = new File(name);
+        Scanner scanner = new Scanner(file);
+        while (scanner.hasNextLine()){
+            String data = scanner.nextLine();
+            if (data.contains("*")){
+                Product product = new Product(0, data.substring(1));
+                temp.add(product);
+            }
+            else {
+                if(!categories.isEmpty()){
+                    categories.getLast().setProducts(temp);
+                    temp.clear();
+                }
+                Category category = new Category(0, data, temp);
+                categories.add(category);
+            }
+        }
+        categories.getLast().setProducts(temp);
+        return categories;
+    }
 }
+
