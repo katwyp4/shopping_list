@@ -40,8 +40,11 @@ public class ShoppingList {
                 categories.add(category);
             }
         }
+        scanner.close();
         categories.getLast().setProducts(temp);
         return categories;
     }
+
+
 }
 
