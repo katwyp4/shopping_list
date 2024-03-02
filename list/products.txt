@@ -1,0 +1,10 @@
+Food
+*Butter
+*Bread
+*Milk
+Household
+*Soap
+*Curtains
+Car
+*Wipers
+*Oil
