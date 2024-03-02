@@ -1,5 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -45,6 +47,15 @@ public class ShoppingList {
         return categories;
     }
 
-
+    private void save(String name, ArrayList<Category> categories) throws IOException {
+        FileWriter fileWriter = new FileWriter(name);
+        for(Category category : categories){
+            fileWriter.write(category.getName());
+            for (Product product : category.getProducts()) {
+                fileWriter.write("*" + product.getName());
+            }
+        }
+        fileWriter.close();
+    }
 }
 
