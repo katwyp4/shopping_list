@@ -70,7 +70,6 @@ public interface IShop {
         myList.removeProduct(category,product);
     }
     static void saves(ShoppingList myList) throws IOException {
-         System.out.println("Input name");
          String name = intercept();
          myList.save(name);
     }
