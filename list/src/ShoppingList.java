@@ -6,24 +6,14 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class ShoppingList {
-    public static void main(String[] args) {
-    }
 
-    private static void info(){
-        System.out.println("-----------------------------------------------------------------------------------------");
-        System.out.println("Available actions:");
-        System.out.println("1. Add product");
-        System.out.println("2. Show list");
-        System.out.println("3. Show list by category");
-        System.out.println("4. Remove list");
-        System.out.println("5. Remove list by category");
-        System.out.println("6. Remove product");
-        System.out.println("7. Save list");
-        System.out.println("-----------------------------------------------------------------------------------------");
-    }
+    private ArrayList<Category> list;
 
-    private ArrayList<Category> load(String name) throws FileNotFoundException {
-        ArrayList<Product> temp =  new ArrayList<>();
+    public ShoppingList() {
+        this.list = new ArrayList<>();
+    }
+    public ShoppingList(String name) throws FileNotFoundException {     //TODO optimization required
+        ArrayList<Product> temp  =  new ArrayList<>();
         ArrayList<Category> categories = new ArrayList<>();
         File file = new File(name);
         Scanner scanner = new Scanner(file);
@@ -44,10 +34,73 @@ public class ShoppingList {
         }
         scanner.close();
         categories.getLast().setProducts(temp);
-        return categories;
+        this.list = categories;
     }
 
-    private void save(String name, ArrayList<Category> categories) throws IOException {
+    public ArrayList<Category> getList() {
+        return list;
+    }
+
+    public void setList(ArrayList<Category> list) {
+        this.list = list;
+    }
+
+    public void display(){  // metoda non-static odnosi sie do listy konkretnego obiektu a nie jak w statycznym
+        for (Category category : list) {
+            System.out.println(category.getName());
+        }
+    }
+
+    public void display(String text){       // metoda non-static wyświetlająca produkty w obiekcie
+        for (Category category : list) {
+            if (category.getName().equals(text) || text.equals("all")) {
+                System.out.println(category.getName());
+                for (Product product : category.getProducts()) {
+                    System.out.println(product.getName());
+                }
+            }
+        }
+    }
+
+    public void add(String category, String product){
+        ArrayList<Product> products = new ArrayList<>();
+        products.add(new Product(0, product));
+        Category category1 = new Category(0, category, products);
+
+        for (Category category2 : list) {
+            if(category2.getName().equals(category)){         //jesli mamy taka kategorie w liscie zakupow
+                category2.getProducts().add(new Product(0, product));      //ti dodajemy produkt
+                return;
+            }
+        }
+
+        list.add(category1);
+    }
+    public void removeAll(){
+        list.clear();
+    }
+     public void removeCategory(String categoryRemove){
+         for (Category category : list) {
+             if(category.getName().equals(categoryRemove)){
+                 list.remove(category);
+             }
+         }
+     }
+     public  void  removeByCategoryAndProduct(String categoryRemove, String product){
+         for (Category category : list) {
+             if (category.getName().equals(categoryRemove)){
+                 for (Product product1 : category.getProducts()) {
+                      if (product1.getName().equals(product)){
+                         category.getProducts().remove(product1);
+                      }
+                 }
+             }
+         }
+     }
+
+
+
+    public void save(String name, ArrayList<Category> categories) throws IOException {
         FileWriter fileWriter = new FileWriter(name);
         for(Category category : categories){
             fileWriter.write(category.getName());
@@ -58,4 +111,7 @@ public class ShoppingList {
         fileWriter.close();
     }
 }
+
+
+
 
