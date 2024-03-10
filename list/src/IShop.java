@@ -42,7 +42,6 @@ public interface IShop {
         String product = intercept();
 
         myList.add(category, product);
-
     }
 
     static void display(ShoppingList myList){

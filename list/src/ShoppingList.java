@@ -88,9 +88,9 @@ public class ShoppingList {
     public void save(String name) throws IOException {
         FileWriter fileWriter = new FileWriter(name);
         for(Category category : list){
-            fileWriter.write(category.getName());
+            fileWriter.write(category.getName() + "\n");
             for (Product product : category.getProducts()) {
-                fileWriter.write("*" + product.getName());
+                fileWriter.write("*" + product.getName() + "\n");
             }
         }
         fileWriter.close();
