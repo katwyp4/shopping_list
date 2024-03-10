@@ -12,33 +12,27 @@ public class ShoppingList {
     public ShoppingList() {
         this.list = new ArrayList<>();
     }
-    public ShoppingList(String name) throws FileNotFoundException {     //TODO optimization required
-        ArrayList<Product> temp  =  new ArrayList<>();
-        ArrayList<Category> categories = new ArrayList<>();
+    public ShoppingList(String name) throws FileNotFoundException {
         File file = new File(name);
         Scanner scanner = new Scanner(file);
+        this.list = new ArrayList<>();
+
         while (scanner.hasNextLine()){
             String data = scanner.nextLine();
             if (data.contains("*")){
-                Product product = new Product(0, data.substring(1));
-                temp.add(product);
-            }
-            else {
-                if(!categories.isEmpty()){
-                    categories.getLast().setProducts(temp);
-                    temp.clear();
-                }
-                Category category = new Category(0, data, temp);
-                categories.add(category);
+                Product product = new Product(data.substring(1));
+                this.list.getLast().getProducts().add(product);
+            } else {
+                Category category = new Category(data, new ArrayList<>());
+                this.list.add(category);
             }
         }
+
         scanner.close();
-        categories.getLast().setProducts(temp);
-        this.list = categories;
     }
 
     public ArrayList<Category> getList() {
-        return list;
+        return this.list;
     }
 
     public void setList(ArrayList<Category> list) {
