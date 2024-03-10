@@ -21,7 +21,7 @@ public class ShoppingList {
             String data = scanner.nextLine();
             if (data.contains("*")){
                 Product product = new Product(data.substring(1));
-                this.list.getLast().getProducts().add(product);
+                this.list.get(this.list.size() - 1).getProducts().add(product);
             } else {
                 Category category = new Category(data, new ArrayList<>());
                 this.list.add(category);
@@ -42,6 +42,9 @@ public class ShoppingList {
     public void display() {
         for (Category category : list) {
             System.out.println(category.getName());
+            for (Product product : category.getProducts()) {
+                System.out.println("-"+product.getName());
+            }
         }
     }
 

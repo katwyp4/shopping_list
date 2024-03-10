@@ -2,6 +2,7 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public interface IShop {
+    Scanner scanner = new Scanner(System.in);
     static void info(){
         System.out.println("-----------------------------------------------------------------------------------------");
         System.out.println("Available actions:");
@@ -16,11 +17,8 @@ public interface IShop {
     }
 
     static String intercept(){
-        Scanner scanner = new Scanner(System.in);
         System.out.println("Please enter your choice: ");
-        String input = scanner.nextLine();
-        scanner.close();
-        return input;
+        return scanner.nextLine();
     }
 
     static void decide(String decision, ShoppingList data, ShoppingList myList) throws IOException {
@@ -44,6 +42,7 @@ public interface IShop {
         String product = intercept();
 
         myList.add(category, product);
+
     }
 
     static void display(ShoppingList myList){
