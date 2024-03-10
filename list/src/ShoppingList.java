@@ -97,12 +97,9 @@ public class ShoppingList {
              }
          }
      }
-
-
-
-    public void save(String name, ArrayList<Category> categories) throws IOException {
+    public void save(String name) throws IOException {
         FileWriter fileWriter = new FileWriter(name);
-        for(Category category : categories){
+        for(Category category : list){
             fileWriter.write(category.getName());
             for (Product product : category.getProducts()) {
                 fileWriter.write("*" + product.getName());

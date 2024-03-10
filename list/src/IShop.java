@@ -31,7 +31,7 @@ public interface IShop {
             case "4" -> remove(myList);
             case "5" -> removeByCategory(myList);
             case "6" -> removeByCategoryAndProducts(myList);
-            case "7" -> saves( data,myList);
+            case "7" -> saves(data,myList);
             default -> System.out.println("Invalid choice. Please enter a number between 1 and 7.");
         }
     }
@@ -72,10 +72,10 @@ public interface IShop {
         String product = intercept();
         myList.removeByCategoryAndProduct(category,product);
     }
-    static  void  saves(ShoppingList data , ShoppingList myList) throws IOException {
-        System.out.println("Input name");
+    static void saves(ShoppingList data , ShoppingList myList) throws IOException {
+         System.out.println("Input name");
          String name = intercept();
-         myList.save(name,data.getList());
+         myList.save(name);
     }
 
 }
