@@ -7,9 +7,9 @@ public interface IShop {
         System.out.println("Available actions:");
         System.out.println("1. Add product");
         System.out.println("2. Show list");
-        System.out.println("3. Show list by category");
+        System.out.println("3. Show category");
         System.out.println("4. Remove list");
-        System.out.println("5. Remove list by category");
+        System.out.println("5. Remove category");
         System.out.println("6. Remove product");
         System.out.println("7. Save list");
         System.out.println("-----------------------------------------------------------------------------------------");
@@ -17,6 +17,7 @@ public interface IShop {
 
     static String intercept(){
         Scanner scanner = new Scanner(System.in);
+        System.out.println("Please enter your choice: ");
         String input = scanner.nextLine();
         scanner.close();
         return input;
@@ -59,15 +60,12 @@ public interface IShop {
     }
 
     static void  removeByCategory(ShoppingList myList){
-        System.out.println("Choose category");
         String category = intercept();
         myList.removeCategory(category);
 
     }
     static  void removeByCategoryAndProducts(ShoppingList myList){
-        System.out.println("Choose category");
         String category = intercept();
-        System.out.println("Choose product");
         String product = intercept();
         myList.removeProduct(category,product);
     }
