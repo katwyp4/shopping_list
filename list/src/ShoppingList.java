@@ -39,55 +39,46 @@ public class ShoppingList {
         this.list = list;
     }
 
-    public void display(){  // metoda non-static odnosi sie do listy konkretnego obiektu a nie jak w statycznym
+    public void display() {
         for (Category category : list) {
             System.out.println(category.getName());
         }
     }
 
-    public void display(String text){       // metoda non-static wyświetlająca produkty w obiekcie
+    public void display(String text){
         for (Category category : list) {
             if (category.getName().equals(text) || text.equals("all")) {
                 System.out.println(category.getName());
                 for (Product product : category.getProducts()) {
-                    System.out.println(product.getName());
+                    System.out.println("-" + product.getName());
                 }
             }
         }
     }
 
-    public void add(String category, String product){
-        ArrayList<Product> products = new ArrayList<>();
-        products.add(new Product(0, product));
-        Category category1 = new Category(0, category, products);
-
-        for (Category category2 : list) {
-            if(category2.getName().equals(category)){         //jesli mamy taka kategorie w liscie zakupow
-                category2.getProducts().add(new Product(0, product));      //ti dodajemy produkt
+    public void add(String categoryName, String productName){
+        for (Category category : list) {
+            if(category.getName().equals(categoryName)) {
+                category.getProducts().add(new Product(productName));
                 return;
             }
         }
 
-        list.add(category1);
+        ArrayList<Product> products = new ArrayList<>();
+        products.add(new Product(productName));
+        Category category = new Category(categoryName, products);
+        list.add(category);
     }
     public void removeAll(){
         list.clear();
     }
-     public void removeCategory(String categoryRemove){
-         for (Category category : list) {
-             if(category.getName().equals(categoryRemove)){
-                 list.remove(category);
-             }
-         }
+     public void removeCategory(String categoryName){
+         list.removeIf(category -> category.getName().equals(categoryName));    // lambda expression alt + enter TODO
      }
-     public  void  removeByCategoryAndProduct(String categoryRemove, String product){
+     public void removeProduct(String categoryName, String productName){
          for (Category category : list) {
-             if (category.getName().equals(categoryRemove)){
-                 for (Product product1 : category.getProducts()) {
-                      if (product1.getName().equals(product)){
-                         category.getProducts().remove(product1);
-                      }
-                 }
+             if (category.getName().equals(categoryName)){
+                 category.getProducts().removeIf(product -> product.getName().equals(productName));
              }
          }
      }

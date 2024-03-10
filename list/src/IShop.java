@@ -1,5 +1,4 @@
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public interface IShop {
@@ -70,7 +69,7 @@ public interface IShop {
         String category = intercept();
         System.out.println("Choose product");
         String product = intercept();
-        myList.removeByCategoryAndProduct(category,product);
+        myList.removeProduct(category,product);
     }
     static void saves(ShoppingList myList) throws IOException {
          System.out.println("Input name");
