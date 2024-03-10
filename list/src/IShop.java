@@ -18,7 +18,9 @@ public interface IShop {
 
     static String intercept(){
         Scanner scanner = new Scanner(System.in);
-        return scanner.nextLine();
+        String input = scanner.nextLine();
+        scanner.close();
+        return input;
     }
 
     static void decide(String decision, ShoppingList data, ShoppingList myList) throws IOException {
