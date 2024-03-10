@@ -12,100 +12,85 @@ public class ShoppingList {
     public ShoppingList() {
         this.list = new ArrayList<>();
     }
-    public ShoppingList(String name) throws FileNotFoundException {     //TODO optimization required
-        ArrayList<Product> temp  =  new ArrayList<>();
-        ArrayList<Category> categories = new ArrayList<>();
+    public ShoppingList(String name) throws FileNotFoundException {
         File file = new File(name);
         Scanner scanner = new Scanner(file);
+        this.list = new ArrayList<>();
+
         while (scanner.hasNextLine()){
             String data = scanner.nextLine();
             if (data.contains("*")){
-                Product product = new Product(0, data.substring(1));
-                temp.add(product);
-            }
-            else {
-                if(!categories.isEmpty()){
-                    categories.getLast().setProducts(temp);
-                    temp.clear();
-                }
-                Category category = new Category(0, data, temp);
-                categories.add(category);
+                Product product = new Product(data.substring(1));
+                this.list.get(this.list.size() - 1).getProducts().add(product);
+            } else {
+                Category category = new Category(data, new ArrayList<>());
+                this.list.add(category);
             }
         }
+
         scanner.close();
-        categories.getLast().setProducts(temp);
-        this.list = categories;
     }
 
     public ArrayList<Category> getList() {
-        return list;
+        return this.list;
     }
 
     public void setList(ArrayList<Category> list) {
         this.list = list;
     }
 
-    public void display(){  // metoda non-static odnosi sie do listy konkretnego obiektu a nie jak w statycznym
+    public void display() {
         for (Category category : list) {
             System.out.println(category.getName());
+            for (Product product : category.getProducts()) {
+                System.out.println("-"+product.getName());
+            }
         }
     }
 
-    public void display(String text){       // metoda non-static wyświetlająca produkty w obiekcie
+    public void display(String text){
         for (Category category : list) {
             if (category.getName().equals(text) || text.equals("all")) {
                 System.out.println(category.getName());
                 for (Product product : category.getProducts()) {
-                    System.out.println(product.getName());
+                    System.out.println("-" + product.getName());
                 }
             }
         }
     }
 
-    public void add(String category, String product){
-        ArrayList<Product> products = new ArrayList<>();
-        products.add(new Product(0, product));
-        Category category1 = new Category(0, category, products);
-
-        for (Category category2 : list) {
-            if(category2.getName().equals(category)){         //jesli mamy taka kategorie w liscie zakupow
-                category2.getProducts().add(new Product(0, product));      //ti dodajemy produkt
+    public void add(String categoryName, String productName){
+        for (Category category : list) {
+            if(category.getName().equals(categoryName)) {
+                category.getProducts().add(new Product(productName));
                 return;
             }
         }
 
-        list.add(category1);
+        ArrayList<Product> products = new ArrayList<>();
+        products.add(new Product(productName));
+        Category category = new Category(categoryName, products);
+        list.add(category);
     }
     public void removeAll(){
         list.clear();
     }
-     public void removeCategory(String categoryRemove){
+     public void removeCategory(String categoryName){
+         list.removeIf(category -> category.getName().equals(categoryName));    // lambda expression alt + enter TODO
+     }
+     public void removeProduct(String categoryName, String productName){
          for (Category category : list) {
-             if(category.getName().equals(categoryRemove)){
-                 list.remove(category);
+             if (category.getName().equals(categoryName)){
+                 category.getProducts().removeIf(product -> product.getName().equals(productName));
              }
          }
      }
-     public  void  removeByCategoryAndProduct(String categoryRemove, String product){
-         for (Category category : list) {
-             if (category.getName().equals(categoryRemove)){
-                 for (Product product1 : category.getProducts()) {
-                      if (product1.getName().equals(product)){
-                         category.getProducts().remove(product1);
-                      }
-                 }
-             }
-         }
-     }
-
-
-
-    public void save(String name, ArrayList<Category> categories) throws IOException {
+    public void save(String name) throws IOException {
         FileWriter fileWriter = new FileWriter(name);
-        for(Category category : categories){
-            fileWriter.write(category.getName());
+        for(Category category : list){
+            fileWriter.write(category.getName() + "\n");
             for (Product product : category.getProducts()) {
-                fileWriter.write("*" + product.getName());
+                fileWriter.write("*" + product.getName() + "\n");
             }
         }
         fileWriter.close();
